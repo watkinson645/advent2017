@@ -1,4 +1,4 @@
-package day1;
+package days;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -9,19 +9,22 @@ public class Day1 {
 
 	public static void main(String args[]) {
 		// scan file
-		String filename = "day1input";
+		String filename = "inputs/day1input";
 		Scanner scan = null;
+		String input = null;
 		try {
-			scan = new Scanner(new File("inputs/" + filename +".txt"));
+			scan = new Scanner(new File(filename +".txt"));
+			
+			while(scan.hasNext()) {
+				input = scan.next();
+			} 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-		}		
-		
-		// Store scan from file in string variable
-		String input = null;
-		while(scan.hasNext()) {
-			input = scan.next();
-		} scan.close();
+		} finally {
+			if (input != null) {
+				scan.close();
+			}
+		}
 		int length = input.length();
 		
 		// add individual characters from scan into List<String>
