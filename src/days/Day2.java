@@ -7,9 +7,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+@SuppressWarnings("unused")
 public class Day2 {
 	
-	public static void main(String args[]) {
+	public static void main(String[] args) {
 		// Variables to change for every test
 		// NOTE: could make a constructor or test cases but console and manual tests will do
 		String file = "inputs/day2input";

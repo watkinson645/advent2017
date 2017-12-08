@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class Day1 {
 
-	public static void main(String args[]) {
+	public static void main(String[] args) {
 		// scan file
 		String filename = "inputs/day1input";
 		Scanner scan = null;
