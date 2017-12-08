@@ -10,11 +10,14 @@ import java.util.Scanner;
 public class Day2 {
 	
 	public static void main(String args[]) {
-		String file = "inputs/day2ex1";
+		// Variables to change for every test
+		// NOTE: could make a constructor or test cases but console and manual tests will do
+		String file = "inputs/day2input";
+		int column = 16, row = 16;
+		
 		Scanner scan = null;
 		List<Integer> list = new ArrayList<Integer>();
-		int column = 4, row = 3;
-		
+
 		// scan all values into list of integers
 		try {
 			scan = new Scanner(new File(file + ".txt"));
@@ -64,16 +67,32 @@ public class Day2 {
 		}
 		
 		// PART 2:
-		// use the largest number and divide by each other value in array
+		// evenly divisible values
 		int checksumV2 = 0;
+		
 		for(int i = 0; i < row; i++) {
+			//System.out.println("Row to be calculated: " + (i + 1));
 			for(int j = 0; j < column; j++) {
 				int currentNo = table[i][j];
+				//System.out.println("Number to be divided: " + currentNo);
+				for(int k = 0; k < column; k++) {
+					int iterNo = table[i][k];
+					//System.out.println(currentNo + " / " + iterNo);
+					float divide = (float) currentNo / iterNo;
+					//System.out.println("Result: " + divide);
+					
+					if (divide == (int) divide && currentNo != iterNo) {
+						//System.out.println("Number added to checksumV2: " + divide);
+						checksumV2 += divide;
+					}
+				}
 			}
 		}
 		
-		// DEBUG: Show all largest and smallest numbers of every row
-		System.out.println("All Values: " + Arrays.deepToString(table));
+		
+		
+		// DEBUG/TESTING:
+//		System.out.println("All Values: " + Arrays.deepToString(table));
 //		System.out.println("Largest and smallest numbers of every row: " + Arrays.deepToString(VIN));
 		System.out.println("Total Checksum for Part 1: " + checksum);
 		System.out.println("Total Checksum for Part 2: " + checksumV2);
