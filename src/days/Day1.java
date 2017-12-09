@@ -18,7 +18,6 @@ public class Day1 implements advent {
 	private List<String> input = new ArrayList<String>();
 	private int[] intList;
 	
-	@Override
 	@Test
 	public void runInputTestPart1() {
 		loadFile(inputFile);
@@ -28,7 +27,6 @@ public class Day1 implements advent {
 		//printToScreen();
 	}
 
-	@Override
 	@Test
 	public void runInputTestPart2() {
 		loadFile(inputFile);
@@ -38,7 +36,6 @@ public class Day1 implements advent {
 		//printToScreen();
 	}
 
-	@Override
 	@Test
 	public void runEx1Test() {
 		loadFile(exFile);

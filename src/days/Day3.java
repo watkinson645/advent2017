@@ -1,24 +1,42 @@
 package days;
 
+import static org.junit.Assert.*;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class Day3 {
+import org.junit.Test;
 
+public class Day3 {
+	/*
+	 * Used David Buchan-Swanson's solution for Part 1.
+	 * Found here: https://github.com/deecewan/advent/blob/master/2017/reason/src/three.re
+	 */
+	private int input = 289326;
+	
+	@Test
+	public void runTestPart1() {
+		assertEquals(calculateManhattanDistance(input), 419);
+	}
+	
+	public int calculateManhattanDistance(int number) {
+		int sqrt = (int) Math.sqrt(number);
+		int awayFromCentre = (sqrt + 1) * (sqrt + 1) - input;
+		return sqrt - (awayFromCentre);
+	}
+	
+	public void part2() {
+		
+	}
+	
+	/*
+	 * Main Source: http://www.guideforschool.com/1728514-java-program-to-print-a-variation-of-circular-spiral-matrix/
+	 * This is an edited variation on the variation of a Circular Spiral Matrix found on the link above.
+	 * The output is a jagged array rotating in a clockwise direction going from the outside bottom 
+	 * right corner inwards to 1. It uses a user-entered number and prints the square in the stated format.
+	 */
 	public static void main(String[] args) {
-		int input = 289326;
-		
-		// PART 1: Using manhattan distance for a spiral array
-		/*
-		 * Formula: sqrt(input) = 537.blah rounded to 538
-		 * 538 / 2 = 269
-		 *  
-		 * I am (538^2 - input) away from the centre along the edge
-		 * which is 118
-		 * 537 - 118 = 419
-		 */
-		
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         System.out.print("Enter the number of elements : ");
         int n = 0;
@@ -59,7 +77,7 @@ public class Day3 {
         }
         
 
-        /* Printing the Circular matrix */
+        // Printing the Circular matrix
         System.out.println("The Circular Matrix is:");
         for(int i = 0; i < n; i++) {
             for(int j = 0; j < n; j++) {
@@ -67,8 +85,5 @@ public class Day3 {
             }
             System.out.println();
         }
-        
-        // PART 2:
-        
 	}
 }
