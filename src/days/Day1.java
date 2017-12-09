@@ -1,67 +1,110 @@
 package days;
 
+import static org.junit.Assert.*;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Day1 {
+import org.junit.Test;
 
-	public static void main(String[] args) {
-		// scan file
-		String filename = "inputs/day1input";
+public class Day1 implements advent {
+	
+	private String inputFile = "day1input";
+	private String exFile = "day1ex1";
+	private String file;
+	private int length, total;
+	private List<String> input = new ArrayList<String>();
+	private int[] intList;
+	
+	@Override
+	@Test
+	public void runInputTestPart1() {
+		loadFile(inputFile);
+		convertFileToArray();
+		part1();
+		assertEquals(total, 1251);
+		//printToScreen();
+	}
+
+	@Override
+	@Test
+	public void runInputTestPart2() {
+		loadFile(inputFile);
+		convertFileToArray();
+		part2();
+		assertEquals(total, 1244);
+		//printToScreen();
+	}
+
+	@Override
+	@Test
+	public void runEx1Test() {
+		loadFile(exFile);
+		convertFileToArray();
+		part1();
+		assertEquals(total, 9);
+		//printToScreen();
+	}
+
+	@Override
+	public void loadFile(String filename) {
 		Scanner scan = null;
-		String input = null;
 		try {
-			scan = new Scanner(new File(filename +".txt"));
-			
+			scan = new Scanner(new File("inputs/" + filename + ".txt"));
 			while(scan.hasNext()) {
-				input = scan.next();
+				file = scan.next();
 			} 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} finally {
-			if (input != null) {
+			if (file != null) {
 				scan.close();
 			}
 		}
-		int length = input.length();
-		
-		// add individual characters from scan into List<String>
-		List<String> finalInput = new ArrayList<String>();  
+	}
+	
+	/*
+	 * Loads the file into an ArrayList and converts it to an array
+	 */
+	public void convertFileToArray() {
+		length = file.length();
 		for (int i = 0; i < length; i++) {
-			String a_char = Character.toString(input.charAt(i)); 
-			finalInput.add(a_char);
+			String a_char = Character.toString(file.charAt(i)); 
+			input.add(a_char);
 		}
-		
-		// convert List<String> to integer array
-		int[] intList = new int[length];
+
+		intList = new int[length];
 		for (int i = 0; i < length; i++) {
-			intList[i] = Integer.valueOf(finalInput.get(i));
+			intList[i] = Integer.valueOf(input.get(i));
 		}
-		
-		// PART 1:
-		// check conditions and add to final total (adjacent character is a match)
-		int total = 0;
-		
-//		for (int i = 0; i < length; i++) {
-//			// last number in stream: checks previous and first numbers
-//			if (i == length - 1) {
-//				if (intList[i] == intList[0]) {
-//					total += intList[i];
-//				}
-//			} else {
-//				if (intList[i] == intList[i + 1]) {
-//					total += intList[i];
-//				}
-//			}
-//		}
-		
-		// PART 2:
-		// check conditions and add to final total (characters halfway round is a match)
+	}
+	
+	/*
+	 * Checks the adjacent number in stream and adds it to total if it matches
+	 */
+	public void part1() {
+ 		for (int i = 0; i < intList.length; i++) {
+ 			if (i == intList.length - 1) {
+ 				if (intList[i] == intList[0]) {
+ 					total += intList[i];
+ 				}
+ 			} else {
+ 				if (intList[i] == intList[i + 1]) {
+ 					total += intList[i];
+ 				}
+ 			}
+ 		}
+	}
+	
+	/*
+	 * Checks the number that is halfway round in the stream and adds it
+	 * to the total if it is the same
+	 */
+	public void part2() {
 		int step = intList.length / 2;
 		for (int i = 0; i < intList.length; i++) {
-			// if i is larger than the step
 			if (i >= step) {
 				int temp = intList.length - i;
 				int j = step - temp;
@@ -74,14 +117,14 @@ public class Day1 {
 				}
 			}
 		}
-		
-		// DEBUG: Print integer results to screen
+	}
+	
+	// DEBUG: Print integer results to screen
+	public void printToScreen() {
 		System.out.print("Input: ");
 		for (int i : intList) {
 			System.out.print(i);
-		}
-		System.out.println("");
+		} System.out.println("");
 		System.out.println("Output: " + total);
 	}
-
 }
