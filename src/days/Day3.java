@@ -14,10 +14,20 @@ public class Day3 {
 	 * Found here: https://github.com/deecewan/advent/blob/master/2017/reason/src/three.re
 	 */
 	private int input = 289326;
+	private int[][] spiralArray;
+	private int size;
 	
 	@Test
 	public void runTestPart1() {
 		assertEquals(calculateManhattanDistance(input), 419);
+	}
+	
+	@Test
+	public void runTestPart2() {
+		// typing in 11 shows the correct answer: 295299
+		readUserInput();
+		spiralPart2(spiralArray, size);
+		displayArray();
 	}
 	
 	public int calculateManhattanDistance(int number) {
@@ -26,8 +36,106 @@ public class Day3 {
 		return sqrt - (awayFromCentre);
 	}
 	
-	public void part2() {
+	public void readUserInput() {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        System.out.print("Enter the number of elements : ");
+        size = 0;
+		try {
+			size = Integer.parseInt(br.readLine());
+		} catch (NumberFormatException | IOException e) {
+			e.printStackTrace();
+		}
+
+        spiralArray = new int[size][size];
+	}
+	
+	/*
+	 * Partial Code Source: https://ideone.com/0bWDJ7
+	 * StackOverflow Thread: https://stackoverflow.com/questions/33684970/print-2-d-array-in-clockwise-expanding-spiral-from-center
+	 */
+	public void spiralPart2(int[][] matrix, int size) {
+		int x = 0; // current x position
+		int y = 0; // current y position
+		int d = 0; // current direction: 0=RIGHT, 1=UP, 2=LEFT, 3=DOWN
+		int c = 0; // counter
+		int s = 1; // chain size
 		
+		x = matrix.length / 2;
+		y = x;
+		//System.out.println("X: " + x + ", Y: " + y);
+		matrix[x][y] = 1;
+		
+		int value = 0;
+		
+		for(int k = 1; k <= (size - 1); k++) {
+			for(int j = 0; j < ( k < (size - 1)?2:3); j++) {
+				for(int i = 0; i < s; i++) {
+					switch(d) {
+						case 0: y = y + 1; 
+								try {
+									value = sumOfAdjacent(x, y);
+								} catch (ArrayIndexOutOfBoundsException e) {
+									value = 0;
+								}
+								matrix[x][y] = value;
+								break;
+						case 1: x = x - 1; 
+								try {
+									value = sumOfAdjacent(x, y);
+								} catch (ArrayIndexOutOfBoundsException e) {
+									value = 0;
+								}
+								matrix[x][y] = value;
+								break;
+						case 2: y = y - 1; 
+								try {
+									value = sumOfAdjacent(x, y);
+								} catch (ArrayIndexOutOfBoundsException e) {
+									value = 0;
+								}
+								matrix[x][y] = value;
+								break;
+						case 3: x = x + 1; 
+								try {
+									value = sumOfAdjacent(x, y);
+								} catch (ArrayIndexOutOfBoundsException e) {
+									value = 0;
+								}
+								matrix[x][y] = value;
+								break;
+					}
+				}
+				d = (d + 1) % 4;
+			}
+			s = s + 1;
+		}
+	}
+	
+	/*
+	 * Partial Source: https://gist.github.com/anonymous/2809ea3548f4e8513a0864f84e3aa3da
+	 */
+	public int sumOfAdjacent(int x, int y) {
+		int sum = 0;
+		sum += spiralArray[x + 1][y];
+		sum += spiralArray[x + 1][y + 1];
+		sum += spiralArray[x][y + 1];
+		sum += spiralArray[x - 1][y + 1];
+		sum += spiralArray[x - 1][y];
+		sum += spiralArray[x - 1][y - 1];
+		sum += spiralArray[x][y - 1];
+		sum += spiralArray[x + 1][y - 1];
+		return sum;
+	}
+	
+	public void displayArray() {
+		// Printing the Circular matrix
+        System.out.println("The Circular Matrix is:");
+        for(int i = 0; i < size; i++) {
+            for(int j = 0; j < size; j++) {
+            	System.out.print(spiralArray[i][j]+ "\t");
+            }
+            System.out.println();
+        }
 	}
 	
 	/*
@@ -76,8 +184,7 @@ public class Day3 {
          r2--;
         }
         
-
-        // Printing the Circular matrix
+		// Printing the Circular matrix
         System.out.println("The Circular Matrix is:");
         for(int i = 0; i < n; i++) {
             for(int j = 0; j < n; j++) {
