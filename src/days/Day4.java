@@ -14,26 +14,31 @@ import org.junit.Test;
 public class Day4 implements advent {
 	
 	private String file = "day4input";
+	private String exFile = "day4ex1";
 	private String[][] pass;
-	private int[] isDupe;
-	private int length, totalDupes;
+	private int[] isDupe, isDupeReverse;
+	private int length, totalDupes, totalDupesReverse;
 	
 	@Test
 	public void runInputTestPart1() {
 		loadFile(file);
 		part1();
-		printToScreen();
+		printToScreen("a");
 		assertEquals(466, pass.length - totalDupes);
 	}
 
 	@Test
 	public void runInputTestPart2() {
-
+		loadFile(file);
+		part2();
+		printToScreen("b");
+		assertEquals(251, pass.length - totalDupesReverse);
 	}
 
 	@Test
 	public void runEx1Test() {
-
+		loadFile(exFile);
+		//printToScreen("c");
 	}
 
 	@Override
@@ -99,18 +104,67 @@ public class Day4 implements advent {
 		}
 	}
 	
+	/*
+	 * Checks whether the passphrases from part 1 have words that
+	 * can have their characters rearrange to form the other word(s)
+	 * making the passphrase invalid
+	 */
 	public void part2() {
+		isDupeReverse = new int[length];
+		for(int i = 0; i < isDupeReverse.length; i++) {
+			isDupeReverse[i] = 0;
+		}
 		
-	}
-	
-	public void printToScreen() {
-		totalDupes = 0;
-		for(int i = 0; i < isDupe.length; i++) {
-			if (isDupe[i] == 1) {
-				totalDupes++;
+		for(int i = 0; i < length; i++) {
+			int rowCountReverse = 0;
+			for(int j = 0; j < pass[i].length; j++) {
+				for(int k = 0; k < pass[i].length; k++) {
+					if (j != k && matchChars(pass[i][j], pass[i][k])) {
+						rowCountReverse++;
+					}
+				}
+			}
+			if (rowCountReverse > 0) {
+				isDupeReverse[i] = 1;
 			}
 		}
-		System.out.println(length - totalDupes);
+	}
+	
+	/*
+	 * Given two strings, it checks if the second string contains all the
+	 * characters present in the first string.
+	 * NOTE: logically both strings have to be of the same length for the
+	 * above condition to be true 
+	 */
+	public boolean matchChars(String first, String second) {
+		boolean outcome = false;
+		int count = 0;
+		for(int i = 0; i < first.length(); i++) {
+			if (second.indexOf(first.charAt(i)) >= 0) {
+				count++;
+			}
+		} if (count == second.length() && count == first.length()) {
+			outcome = true;
+		}
+	    return outcome;
+	}
+	
+	public void printToScreen(String part) {
+		totalDupes = 0;
+		totalDupesReverse = 0;
+		if (part.equals("a")) {
+			for(int i = 0; i < isDupe.length; i++) {
+				if (isDupe[i] == 1) {
+					totalDupes++;
+				}
+			} System.out.println("Part 1 Result: " + (length - totalDupes));
+		} else {
+			for(int i = 0; i < isDupeReverse.length; i++) {
+				if(isDupeReverse[i] == 1) {
+					totalDupesReverse++;
+				}
+			} System.out.println("Part 2 result: " + (length - totalDupesReverse));
+		}
 	}
 
 }
