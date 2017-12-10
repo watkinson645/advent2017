@@ -7,21 +7,43 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-@SuppressWarnings("unused")
-public class Day2 {
-	
-	public static void main(String[] args) {
-		// Variables to change for every test
-		// NOTE: could make a constructor or test cases but console and manual tests will do
-		String file = "inputs/day2input";
-		int column = 16, row = 16;
-		
-		Scanner scan = null;
-		List<Integer> list = new ArrayList<Integer>();
+import org.junit.Test;
 
-		// scan all values into list of integers
+public class Day2 implements advent {
+	
+	private String file = "day2input";
+	private List<Integer> list;
+	private int[][] table;
+	private int checksum, checksumV2;
+	private int row = 16, column = 16;
+	
+	@Test
+	public void runInputTestPart1() {
+		loadFile(file);
+		convertToTableArray(row, column);
+		part1(row, column);
+		printToScreen("a");
+	}
+
+	@Test
+	public void runInputTestPart2() {
+		loadFile(file);
+		convertToTableArray(row, column);
+		part2(row, column);
+		printToScreen("b");
+	}
+
+	@Test
+	public void runEx1Test() {
+
+	}
+
+	@Override
+	public void loadFile(String filename) {
+		Scanner scan = null;
+		list = new ArrayList<Integer>();
 		try {
-			scan = new Scanner(new File(file + ".txt"));
+			scan = new Scanner(new File("inputs/" + filename + ".txt"));
 			while(scan.hasNext()) {
 				int value = scan.nextInt();
 				list.add(value);
@@ -33,17 +55,22 @@ public class Day2 {
 				scan.close();
 			}
 		}
-		
+	}
+	
+	public void convertToTableArray(int row, int column) {
 		// store all scanned values into a jagged array
-		int[][] table = new int[row][column];
+		table = new int[row][column];
 		for(int i = 0; i < row; i++) {
 			for(int j = 0; j < column; j++) {
 				table[i][j] = list.get((i * column) + j).intValue();
 			}
-		} 
-		
-		// PART 1: 
-		// Retrieve all largest and smallest numbers from every row
+		}
+	}
+	
+	/*
+	 * Calculate the sum of the difference between the largest and smallest numbers in each row
+	 */
+	public void part1(int row, int column) {
 		int[][] VIN = new int[row][2];
 		for(int i = 0; i < row; i++) {
 			int smallest = table[i][0];
@@ -59,18 +86,19 @@ public class Day2 {
 			VIN[i][1] = smallest;
 		}
 		
-		// Calculate checksum: total of all rows' largest and smallest values subtracted
-		int checksum = 0;
+		checksum = 0;
 		for(int i = 0; i < row; i++) {
 			int large = VIN[i][0];
 			int small = VIN[i][1];
 			checksum += (large - small);
 		}
-		
-		// PART 2:
-		// evenly divisible values
-		int checksumV2 = 0;
-		
+	}
+	
+	/*
+	 * Calculate the sum of the evenly divisible numbers in each row
+	 */
+	public void part2(int row, int column) {
+		checksumV2 = 0;
 		for(int i = 0; i < row; i++) {
 			//System.out.println("Row to be calculated: " + (i + 1));
 			for(int j = 0; j < column; j++) {
@@ -89,14 +117,18 @@ public class Day2 {
 				}
 			}
 		}
-		
-		
-		
-		// DEBUG/TESTING:
+	}
+	
+	/*
+	 * Debugging method to show checksum results for each part of the task
+	 */
+	public void printToScreen(String part) {
 //		System.out.println("All Values: " + Arrays.deepToString(table));
 //		System.out.println("Largest and smallest numbers of every row: " + Arrays.deepToString(VIN));
-		System.out.println("Total Checksum for Part 1: " + checksum);
-		System.out.println("Total Checksum for Part 2: " + checksumV2);
-		
+		if (part.equals("a")) {
+			System.out.println("Total Checksum for Part 1: " + checksum);
+		} else {
+			System.out.println("Total Checksum for Part 2: " + checksumV2);
+		}
 	}
 }
