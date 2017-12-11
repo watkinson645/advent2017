@@ -29,11 +29,14 @@ public class Day5 implements advent {
 	public void runInputTestPart1() {
 		loadFile(file);
 		part1();
-		printToScreen();
+		//printToScreen();
 	}
 
 	@Test
 	public void runInputTestPart2() {
+		loadFile(file);
+		part2();
+		printToScreen();
 	}
 
 	@Test
@@ -55,6 +58,9 @@ public class Day5 implements advent {
 	}
 	
 	/*
+	 * Jump forwards or backwards according to the value of the position that you're at.
+	 * Increment current position's value by 1 and move.
+	 * 
 	 * Had a version which I believed should have worked but didn't. Googled a version that worked :/
 	 * Credit to: snarkbait
 	 * Link: https://gist.github.com/snarkbait/08300394caef4ae36d01762d4d8b7460
@@ -75,8 +81,28 @@ public class Day5 implements advent {
         }
     }
 	
+	
+	/*
+	 * Jump forwards or backwards according to the value of the position that you're at.
+	 * Decrement current position's value by 1 if the current position's value is three or more
+	 */
 	public void part2() {
+		int[] b = new int[jumps.size()];
+		for(int i = 0; i < jumps.size(); i++) {
+			b[i] = jumps.get(i);
+		}
 		
+		int current = 0;
+		steps = 0;
+		
+		while (current < jumps.size() && current >= 0) {
+			int jump = 0;
+			if (b[current] >= 3) {
+				jump = b[current]--;
+			} else jump = b[current]++;
+			current += jump;
+			steps++;
+		}
 	}
 	
 	public void printToScreen() {
